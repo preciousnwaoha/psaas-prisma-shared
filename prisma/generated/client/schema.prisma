@@ -1,0 +1,93 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+// prisma/schema.prisma
+generator client {
+  provider = "prisma-client-js"
+  output   = "./prisma/generated/client"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+model Profile {
+  id        String   @id @default(uuid()) @db.Uuid
+  authId    String   @unique @map("auth_id")
+  email     String   @unique
+  name      String?
+  firstName String?  @map("first_name")
+  lastName  String?  @map("last_name")
+  image     String?
+  phone     String?
+  role      Role     @default(USER)
+  tags      String[] @default([])
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  subscriptions Subscription[]
+  userMetrics   UserMetric[]
+
+  @@map("profiles")
+}
+
+model UserMetric {
+  userId String  @id @map("user_id") @db.Uuid
+  user   Profile @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  totalTextGenerations  Int @default(0) @map("total_text_generations")
+  totalImageGenerations Int @default(0) @map("total_image_generations")
+  totalAudioGenerations Int @default(0) @map("total_audio_generations")
+
+  totalSubscriptions Int   @default(0) @map("total_subscriptions")
+  totalRevenue       Float @default(0) @map("total_revenue")
+
+  @@map("user_metrics")
+}
+
+model Subscription {
+  id     String  @id @default(uuid()) @db.Uuid
+  userId String  @map("user_id") @db.Uuid
+  user   Profile @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  provider       String
+  customerId     String @map("customer_id")
+  subscriptionId String @unique @map("subscription_id")
+  status         String @map("status")
+  planId         String @map("plan_id")
+
+  trialEndsAt           DateTime? @map("trial_ends_at")
+  endsAt                DateTime? @map("ends_at")
+  startsAt              DateTime  @map("starts_at")
+  currentPeriodStartsAt DateTime  @map("current_period_starts_at")
+  currentPeriodEndsAt   DateTime  @map("current_period_ends_at")
+  cancellationReason    String?   @map("cancellation_reason")
+
+  prorationBehavior String? @map("proration_behavior")
+
+  @@map("subscriptions")
+}
+
+model Metric {
+  id String @id @default(uuid()) @db.Uuid
+
+  totalUsers         Int   @default(0) @map("total_users")
+  totalSubscriptions Int   @default(0) @map("total_subscriptions")
+  totalRevenue       Float @default(0) @map("total_revenue")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("metrics")
+}

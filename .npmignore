@@ -1,0 +1,29 @@
+# Ignore Prisma Client files generated during prisma generate
+migrations/
+
+# Prisma schema, as users don't need this to use the generated client
+# schema.prisma
+
+# Ignore environment variables
+*.env
+.env.*
+
+# TypeScript source files
+src/
+
+# TypeScript configuration files
+tsconfig.json
+
+# Log files
+*.log
+
+# Editor directories and files
+.idea/
+.vscode/
+
+# Git files
+.git/
+
+# Extra files
+makefile
+note.md

@@ -1,0 +1,45 @@
+{
+  "name": "@preciousnwaoha/saas-prisma-shared",
+  "version": "1.0.0",
+  "description": "Shared Prisma Client as Internal Package",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "author": "Precious Nwaoha <nwaohaprecious25@gmail.com>",
+  "scripts": {
+    "build": "tsc",
+    "prisma:migrate": "npx prisma migrate dev --name init",
+    "prisma:introspect": "npx prisma introspect",
+    "prisma:generate": "npx prisma generate",
+    "prisma:push": "npx prisma db push",
+    "start": "npx prisma studio",
+    "prepare": "npx prisma generate && tsc && cp src/index.d.ts dist/index.d.ts",
+    "postinstall": "echo 'postinstall complete.'",
+    "test": "echo \"Error: no test specified\" && exit 0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/preciousnwaoha/saas-prisma-shared.git"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@prisma/client": "^6.7.0",
+    "@prisma/extension-accelerate": "^1.3.0",
+    "dotenv": "^16.4.5"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.17",
+    "prisma": "^6.7.0",
+    "typescript": "^5.8.3"
+  },
+  "files": [
+    "dist",
+    "scripts",
+    "schema.prisma",
+    "prisma/generated/client",
+    "!migrations"
+  ],
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
+  "bundleDependencies": []
+}
