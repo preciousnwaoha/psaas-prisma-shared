@@ -1,6 +1,6 @@
 {
   "name": "@preciousnwaoha/saas-prisma-shared",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Shared Prisma Client as Internal Package",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
